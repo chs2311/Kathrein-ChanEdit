@@ -1,0 +1,11 @@
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\bin\Debug\Kathrein-ChanEdit.exe.config
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\bin\Debug\Kathrein-ChanEdit.exe
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\bin\Debug\Kathrein-ChanEdit.pdb
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein-ChanEdit.csproj.AssemblyReference.cache
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein_ChanEdit.Form1.resources
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein_ChanEdit.Properties.Resources.resources
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein-ChanEdit.csproj.GenerateResource.cache
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein-ChanEdit.csproj.CoreCompileInputs.cache
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein-ChanEdit.exe
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein-ChanEdit.pdb
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein-ChanEdit.exe.config
