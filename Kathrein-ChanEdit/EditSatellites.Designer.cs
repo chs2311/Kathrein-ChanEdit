@@ -1,0 +1,182 @@
+﻿namespace Kathrein_ChanEdit
+{
+    partial class EditSatellites
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.TitleLabel = new System.Windows.Forms.Label();
+            this.SatGrid = new System.Windows.Forms.DataGridView();
+            this.SaveButton = new System.Windows.Forms.Button();
+            this.LoadButton = new System.Windows.Forms.Button();
+            this.SatIDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SatNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LO1FrequencyColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LO2FrequencyColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BandSwitchFreqColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LongitudeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SkewOffsetColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.SatGrid)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // TitleLabel
+            // 
+            this.TitleLabel.Font = new System.Drawing.Font("Arial", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TitleLabel.Location = new System.Drawing.Point(10, 12);
+            this.TitleLabel.Name = "TitleLabel";
+            this.TitleLabel.Size = new System.Drawing.Size(325, 40);
+            this.TitleLabel.TabIndex = 35;
+            this.TitleLabel.Text = "Edit Satellites";
+            this.TitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // SatGrid
+            // 
+            this.SatGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SatGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            this.SatGrid.BackgroundColor = System.Drawing.SystemColors.ControlDark;
+            this.SatGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.SatGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.SatGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.SatIDColumn,
+            this.SatNameColumn,
+            this.LO1FrequencyColumn,
+            this.LO2FrequencyColumn,
+            this.BandSwitchFreqColumn,
+            this.LongitudeColumn,
+            this.SkewOffsetColumn});
+            this.SatGrid.GridColor = System.Drawing.Color.Black;
+            this.SatGrid.Location = new System.Drawing.Point(16, 58);
+            this.SatGrid.MultiSelect = false;
+            this.SatGrid.Name = "SatGrid";
+            this.SatGrid.ShowEditingIcon = false;
+            this.SatGrid.Size = new System.Drawing.Size(780, 588);
+            this.SatGrid.TabIndex = 36;
+            // 
+            // SaveButton
+            // 
+            this.SaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.SaveButton.BackColor = System.Drawing.SystemColors.Control;
+            this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SaveButton.Location = new System.Drawing.Point(668, 12);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(128, 40);
+            this.SaveButton.TabIndex = 37;
+            this.SaveButton.Text = "Save Changes";
+            this.SaveButton.UseVisualStyleBackColor = false;
+            this.SaveButton.Click += new System.EventHandler(this.SaveSatellites);
+            // 
+            // LoadButton
+            // 
+            this.LoadButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.LoadButton.BackColor = System.Drawing.SystemColors.Control;
+            this.LoadButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LoadButton.Location = new System.Drawing.Point(497, 12);
+            this.LoadButton.Name = "LoadButton";
+            this.LoadButton.Size = new System.Drawing.Size(165, 40);
+            this.LoadButton.TabIndex = 38;
+            this.LoadButton.Text = "Load Current Config";
+            this.LoadButton.UseVisualStyleBackColor = false;
+            this.LoadButton.Click += new System.EventHandler(this.LoadSatellites);
+            // 
+            // SatIDColumn
+            // 
+            this.SatIDColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.SatIDColumn.HeaderText = "SatID";
+            this.SatIDColumn.Name = "SatIDColumn";
+            this.SatIDColumn.ReadOnly = true;
+            // 
+            // SatNameColumn
+            // 
+            this.SatNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.SatNameColumn.HeaderText = "SatName";
+            this.SatNameColumn.Name = "SatNameColumn";
+            // 
+            // LO1FrequencyColumn
+            // 
+            this.LO1FrequencyColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.LO1FrequencyColumn.HeaderText = "LO1 Frequency";
+            this.LO1FrequencyColumn.Name = "LO1FrequencyColumn";
+            // 
+            // LO2FrequencyColumn
+            // 
+            this.LO2FrequencyColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.LO2FrequencyColumn.HeaderText = "LO2 Frequency";
+            this.LO2FrequencyColumn.Name = "LO2FrequencyColumn";
+            // 
+            // BandSwitchFreqColumn
+            // 
+            this.BandSwitchFreqColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.BandSwitchFreqColumn.HeaderText = "Band Switch Frequency";
+            this.BandSwitchFreqColumn.Name = "BandSwitchFreqColumn";
+            // 
+            // LongitudeColumn
+            // 
+            this.LongitudeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.LongitudeColumn.HeaderText = "Longitude";
+            this.LongitudeColumn.Name = "LongitudeColumn";
+            // 
+            // SkewOffsetColumn
+            // 
+            this.SkewOffsetColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.SkewOffsetColumn.HeaderText = "Skew Offset";
+            this.SkewOffsetColumn.Name = "SkewOffsetColumn";
+            // 
+            // EditSatellites
+            // 
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(808, 669);
+            this.Controls.Add(this.LoadButton);
+            this.Controls.Add(this.SaveButton);
+            this.Controls.Add(this.SatGrid);
+            this.Controls.Add(this.TitleLabel);
+            this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Name = "EditSatellites";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Edit Satellites";
+            ((System.ComponentModel.ISupportInitialize)(this.SatGrid)).EndInit();
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Label TitleLabel;
+        private System.Windows.Forms.DataGridView SatGrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SatIDColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SatNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LO1FrequencyColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LO2FrequencyColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BandSwitchFreqColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LongitudeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SkewOffsetColumn;
+        private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.Button LoadButton;
+    }
+}

@@ -1,0 +1,15 @@
+D:\Dev\Kathrein-ChanEdit\Kathrein-RecBrowser\bin\Debug\Kathrein-RecBrowser.exe.config
+D:\Dev\Kathrein-ChanEdit\Kathrein-RecBrowser\bin\Debug\Kathrein-RecBrowser.exe
+D:\Dev\Kathrein-ChanEdit\Kathrein-RecBrowser\bin\Debug\Kathrein-RecBrowser.pdb
+D:\Dev\Kathrein-ChanEdit\Kathrein-RecBrowser\obj\Debug\Kathrein-RecBrowser.csproj.AssemblyReference.cache
+D:\Dev\Kathrein-ChanEdit\Kathrein-RecBrowser\obj\Debug\Kathrein_RecBrowser.Form1.resources
+D:\Dev\Kathrein-ChanEdit\Kathrein-RecBrowser\obj\Debug\Kathrein_RecBrowser.Properties.Resources.resources
+D:\Dev\Kathrein-ChanEdit\Kathrein-RecBrowser\obj\Debug\Kathrein-RecBrowser.csproj.GenerateResource.cache
+D:\Dev\Kathrein-ChanEdit\Kathrein-RecBrowser\obj\Debug\Kathrein-RecBrowser.csproj.CoreCompileInputs.cache
+D:\Dev\Kathrein-ChanEdit\Kathrein-RecBrowser\obj\Debug\Kathrein-RecBrowser.exe
+D:\Dev\Kathrein-ChanEdit\Kathrein-RecBrowser\obj\Debug\Kathrein-RecBrowser.pdb
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\bin\Debug\Kathrein-RecBrowser.exe.config
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\bin\Debug\Kathrein-RecBrowser.exe
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\bin\Debug\Kathrein-RecBrowser.pdb
+D:\Dev\Kathrein-ChanEdit\Kathrein-RecBrowser\obj\Debug\Kathrein_RecBrowser.Recording.resources
+D:\Dev\Kathrein-ChanEdit\Kathrein-RecBrowser\obj\Debug\Kathrein-RecBrowser.exe.config

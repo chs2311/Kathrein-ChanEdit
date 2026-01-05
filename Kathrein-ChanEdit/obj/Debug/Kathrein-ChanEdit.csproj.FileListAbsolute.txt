@@ -9,3 +9,10 @@ D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein-ChanEdit.csproj.Co
 D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein-ChanEdit.exe
 D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein-ChanEdit.pdb
 D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein-ChanEdit.exe.config
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein_ChanEdit.SortRadioChannels.resources
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein_ChanEdit.SortTVChannels.resources
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein_ChanEdit.SortDataChannels.resources
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\bin\Debug\Kathrein-RecBrowser.pdb
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\bin\Debug\Kathrein-RecBrowser.exe.config
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein.767A3FBE.Up2Date
+D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\obj\Debug\Kathrein_ChanEdit.EditSatellites.resources

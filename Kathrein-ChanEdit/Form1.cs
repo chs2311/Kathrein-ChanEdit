@@ -11,23 +11,63 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Kathrein_RecBrowser;
 
 namespace Kathrein_ChanEdit
 {
     public partial class Form1 : Form
     {
-        public ServiceList CurrentConfig;
+        public static ServiceList CurrentConfig;
 
-        List<string> TVChannels = new List<string>();
-        List<string> RadioChannels = new List<string>();
+        public static List<string> TVChannels = new List<string>();
+        public static List<string> RadioChannels = new List<string>();
+        public static List<string> DataChannels = new List<string>();
+        public static List<string> SortedTVChannels = new List<string>();
+        public static List<string> SortedRadioChannels = new List<string>();
+        public static List<string> SortedDataChannels = new List<string>();
 
-        List<string> SortedTVChannels = new List<string>();
-        List<string> SortedRadioChannels = new List<string>();
+        public static SortTVChannels SortTVChannels = new SortTVChannels();
+        public static SortRadioChannels SortRadioChannels = new SortRadioChannels();
+        public static SortDataChannels SortDataChannels = new SortDataChannels();
+        public static EditSatellites EditSatellites = new EditSatellites();
+        public static Kathrein_RecBrowser.Form1 KathreinRecBrowser = new Kathrein_RecBrowser.Form1();
 
         public Form1()
         {
             InitializeComponent();
+            OpenAllWindows();
             LoadButtonClicked(null, null);
+        }
+
+        private void OpenAllWindows()
+        {
+            KathreinRecBrowser.FormBorderStyle = FormBorderStyle.None;
+
+            SortTVChannels.Dock = DockStyle.Fill;
+            SortRadioChannels.Dock = DockStyle.Fill;
+            SortDataChannels.Dock = DockStyle.Fill;
+            EditSatellites.Dock = DockStyle.Fill;
+            KathreinRecBrowser.Dock = DockStyle.Fill;
+
+            SortTVChannels.TopLevel = false;
+            SortRadioChannels.TopLevel = false;
+            SortDataChannels.TopLevel = false;
+            EditSatellites.TopLevel = false;
+            KathreinRecBrowser.TopLevel = false;
+
+            WindowsPanel.Controls.Add(SortTVChannels);
+            WindowsPanel.Controls.Add(SortRadioChannels);
+            WindowsPanel.Controls.Add(SortDataChannels);
+            WindowsPanel.Controls.Add(EditSatellites);
+            WindowsPanel.Controls.Add(KathreinRecBrowser);
+
+            SortTVChannels.Show();
+            SortRadioChannels.Show();
+            SortDataChannels.Show();
+            EditSatellites.Show();
+            KathreinRecBrowser.Show();
+
+            OpenTVChannels(null, null);
         }
 
         private void LoadButtonClicked(object sender, EventArgs e)
@@ -38,6 +78,7 @@ namespace Kathrein_ChanEdit
             if(ofd.ShowDialog() == DialogResult.OK)
             {
                 CurrentConfig = ServiceList.Load(ofd.FileName);
+                EditSatellites.LoadSatellites(sender, e);
 
                 AllChannelsPending();
             }
@@ -55,7 +96,68 @@ namespace Kathrein_ChanEdit
             }
         }
 
-        private Service GetChannelByIdent(string ident, string ServiceType)
+        private ServiceList PrepForSave()
+        {
+            ServiceList edited = new ServiceList();
+            edited.Overview = CurrentConfig.Overview;
+            edited.Satellites = CurrentConfig.Satellites;
+            edited.Transponders = CurrentConfig.Transponders;
+            edited.Favorites = CurrentConfig.Favorites;
+
+            foreach (Service serv in CurrentConfig.Service)
+            {
+                if (serv.ServiceType.ToUpper() != "TV" && serv.ServiceType.ToUpper() != "RADIO" && serv.ServiceType.ToUpper() != "DATA")
+                {
+                    edited.Service.Add(serv);
+                }
+            }
+
+            int j = 1;
+            foreach (object obj in SortTVChannels.FinallyListTV.Items)
+            {
+                string ident = (string)obj;
+                Service serv = GetChannelByIdent(ident, "TV");
+
+                if (serv != null)
+                {
+                    serv.ChannelNo = j;
+                    edited.Service.Add(serv);
+                    j++;
+                }
+            }
+
+            int k = 1;
+            foreach (object obj in SortRadioChannels.FinallyListRadio.Items)
+            {
+                string ident = (string)obj;
+                Service serv = GetChannelByIdent(ident, "RADIO");
+
+                if (serv != null)
+                {
+                    serv.ChannelNo = k;
+                    edited.Service.Add(serv);
+                    k++;
+                }
+            }
+
+            int l = 1;
+            foreach (object obj in SortDataChannels.FinallyListData.Items)
+            {
+                string ident = (string)obj;
+                Service serv = GetChannelByIdent(ident, "DATA");
+
+                if (serv != null)
+                {
+                    serv.ChannelNo = l;
+                    edited.Service.Add(serv);
+                    l++;
+                }
+            }
+
+            return edited;
+        }
+
+        public static Service GetChannelByIdent(string ident, string ServiceType)
         {
             foreach (Service serv in CurrentConfig.Service)
             {
@@ -71,292 +173,44 @@ namespace Kathrein_ChanEdit
             return null;
         }
 
+        public static Satellite GetSatelliteBySatId(int satid)
+        {
+            foreach(Satellite sat in CurrentConfig.Satellites)
+            {
+                if(sat.SatID == satid)
+                {
+                    return sat;
+                }
+            }
+
+            return null;
+        }
+
+        public static Transponder GetTransponderByFrequency(int freq, int satid)
+        {
+            foreach (Transponder tp in CurrentConfig.Transponders)
+            {
+                if(tp.SatID == satid && tp.Frequency == freq)
+                {
+                    return tp;
+                }
+            }
+
+            return null;
+        }
+
         private void AllChannelsPending()
         {
             TVChannels = new List<string>();
             RadioChannels = new List<string>();
+            DataChannels = new List<string>();
             SortedTVChannels = new List<string>();
             SortedRadioChannels = new List<string>();
+            SortedDataChannels = new List<string>();
 
-            TVChannelsPending();
-            RadioChannelsPending();
-        }
-
-        private void TVChannelsPending()
-        {
-            FinallyListTV.Items.Clear();
-            PendingListTV.Items.Clear();
-
-            List<string> TVChannels = new List<string>();
-
-            foreach (Service channel in CurrentConfig.Service)
-            {
-                string type = channel.ServiceType.ToUpper();
-
-                if (type == "TV")
-                {
-                    TVChannels.Add(channel.GetIdent());
-                }
-            }
-
-            foreach (string channel in TVChannels)
-            {
-                _ = PendingListTV.Items.Add(channel);
-                this.TVChannels.Add(channel);
-            }
-        }
-
-        private void RadioChannelsPending()
-        {
-            FinallyListRadio.Items.Clear();
-            PendingListRadio.Items.Clear();
-
-            List<string> RADIOChannels = new List<string>();
-
-            foreach (Service channel in CurrentConfig.Service)
-            {
-                string type = channel.ServiceType.ToUpper();
-
-                if (type == "RADIO")
-                {
-                    RADIOChannels.Add(channel.GetIdent());
-                }
-            }
-
-            foreach (string channel in RADIOChannels)
-            {
-                _ = PendingListRadio.Items.Add(channel);
-                RadioChannels.Add(channel);
-            }
-        }
-
-        private void SearchTVChannel(object sender, EventArgs e)
-        {
-            PendingListTV.Items.Clear();
-
-            if (string.IsNullOrWhiteSpace(FilterTextTV.Text))
-            {
-                foreach (string itm in TVChannels)
-                {
-                    _ = PendingListTV.Items.Add(itm);
-                }
-
-                return;
-            }
-
-            string[] filter = FilterTextTV.Text.ToUpper().Split(new char[] { ' ' });
-            foreach (string itm in TVChannels)
-            {
-                if (IsValidFilter(filter, itm))
-                {
-                    _ = PendingListTV.Items.Add(itm);
-                }
-            }
-        }
-
-        private void SearchRadioChannel(object sender, EventArgs e)
-        {
-            PendingListRadio.Items.Clear();
-
-            if (string.IsNullOrWhiteSpace(FilterTextRadio.Text))
-            {
-                foreach(string itm in RadioChannels)
-                {
-                    _ = PendingListRadio.Items.Add(itm);
-                }
-
-                return;
-            }
-
-            string[] filter = FilterTextRadio.Text.ToUpper().Split(new char[] { ' ' });
-            foreach (string itm in RadioChannels)
-            {
-                if(IsValidFilter(filter, itm))
-                {
-                    _ = PendingListRadio.Items.Add(itm);
-                }
-            }
-        }
-
-        private bool IsValidFilter(string[] filter, string input)
-        {
-            string text = input.Substring(8);
-            foreach (string f in filter)
-            {
-                if (!string.IsNullOrWhiteSpace(f))
-                {
-                    if (!text.ToUpper().Contains(f.ToUpper()))
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        private void DeleteAllShownTV(object sender, EventArgs e)
-        {
-            foreach(object itm in PendingListTV.Items)
-            {
-                string ident = (string)itm;
-                _ = TVChannels.Remove(ident);
-            }
-
-            SearchTVChannel(sender, e);
-        }
-
-        private void DeleteAllShownRadio(object sender, EventArgs e)
-        {
-            foreach (object itm in PendingListRadio.Items)
-            {
-                string ident = (string)itm;
-                _ = RadioChannels.Remove(ident);
-            }
-
-            SearchRadioChannel(sender, e);
-        }
-
-        private void PendingListTVDoubleClick(object sender, MouseEventArgs e)
-        {
-            int index = PendingListTV.IndexFromPoint(e.Location);
-
-            if (index != ListBox.NoMatches)
-            {
-                AddTVChannel(PendingListTV.Items[index].ToString());
-            }
-
-            SearchTVChannel(sender, e);
-        }
-
-        private void PendingListRadioDoubleClick(object sender, MouseEventArgs e)
-        {
-            int index = PendingListRadio.IndexFromPoint(e.Location);
-
-            if (index != ListBox.NoMatches)
-            {
-                AddRadioChannel(PendingListRadio.Items[index].ToString());
-            }
-
-            SearchRadioChannel(sender, e);
-        }
-
-        private void FinallyListTVDoubleClick(object sender, MouseEventArgs e)
-        {
-            int index = FinallyListTV.IndexFromPoint(e.Location);
-
-            if (index != ListBox.NoMatches)
-            {
-                string selectedItem = FinallyListTV.Items[index].ToString();
-                TVChannels.Add(selectedItem);
-                FinallyListTV.Items.Remove(selectedItem);
-                _ = SortedTVChannels.Remove(selectedItem);
-            }
-
-            SearchTVChannel(sender, e);
-        }
-
-        private void FinallyListRadioDoubleClick(object sender, MouseEventArgs e)
-        {
-            int index = FinallyListRadio.IndexFromPoint(e.Location);
-
-            if (index != ListBox.NoMatches)
-            {
-                string selectedItem = FinallyListRadio.Items[index].ToString() ;
-                RadioChannels.Add(selectedItem);
-                FinallyListRadio.Items.Remove(selectedItem);
-                _ = SortedRadioChannels.Remove(selectedItem);
-            }
-
-            SearchRadioChannel(sender, e);
-        }
-
-        private void AddTVChannel(string channel)
-        {
-            string selectedItem = channel;
-            _ = TVChannels.Remove(selectedItem);
-            _ = FinallyListTV.Items.Add(selectedItem);
-            SortedTVChannels.Add(selectedItem);
-        }
-
-        private void AddRadioChannel(string channel)
-        {
-            string selectedItem = channel;
-            _ = RadioChannels.Remove(selectedItem);
-            _ = FinallyListRadio.Items.Add(selectedItem);
-            SortedRadioChannels.Add(selectedItem);
-        }
-
-        private void AddAllTVChannels(object sender, EventArgs e)
-        {
-            string[] strings = new string[TVChannels.Count];
-            int index = 0;
-            foreach (object itm in PendingListTV.Items)
-            {
-                string ident = (string)itm;
-                strings[index] = ident;
-                index++;
-            }
-
-            List<string> sorted = strings
-            .Where(s =>
-            {
-                return s != null;
-            }).OrderBy(s =>
-            {
-                return s.Length > 10 ? s.Substring(13) : s;
-            })
-            .ToList();
-
-            foreach (string ident in sorted)
-            {
-                AddTVChannel(ident);
-            }
-
-            SearchTVChannel(sender, e);
-        }
-
-        private void AddAllRadioChannels(object sender, EventArgs e)
-        {
-            string[] strings = new string[RadioChannels.Count];
-            int index = 0;
-            foreach (object itm in PendingListRadio.Items)
-            {
-                string ident = (string)itm;
-                strings[index] = ident;
-                index++;
-            }
-
-            List<string> sorted = strings
-            .Where(s =>
-            {
-                return s != null;
-            }).OrderBy(s =>
-            {
-                return s.Length > 10 ? s.Substring(10) : s;
-            })
-            .ToList();
-
-            foreach (string ident in sorted)
-            {
-                AddRadioChannel(ident);
-            }
-
-            SearchRadioChannel(sender, e);
-        }
-
-        private void DeleteTV(object sender, EventArgs e)
-        {
-            string selectedItem = (string)PendingListTV.SelectedItem;
-            _ = TVChannels.Remove(selectedItem);
-            SearchTVChannel(sender, e);
-        }
-
-        private void DeleteRadio(object sender, EventArgs e)
-        {
-            string selectedItem = (string)PendingListRadio.SelectedItem;
-            _ = RadioChannels.Remove(selectedItem);
-            SearchRadioChannel(sender, e);
+            SortTVChannels.ChannelsPending();
+            SortRadioChannels.ChannelsPending();
+            SortDataChannels.ChannelsPending();
         }
 
         private void QuickSaveButtonClicked(object sender, EventArgs e)
@@ -370,147 +224,39 @@ namespace Kathrein_ChanEdit
             AllChannelsPending();
         }
 
-        private ServiceList PrepForSave()
+        private void ExitButtonClicked(object sender, EventArgs e)
         {
-            ServiceList edited = new ServiceList();
-            edited.Overview = CurrentConfig.Overview;
-            edited.Satellites = CurrentConfig.Satellites;
-            edited.Transponders = CurrentConfig.Transponders;
-            edited.Favorites = CurrentConfig.Favorites;
-
-            foreach (Service serv in CurrentConfig.Service)
-            {
-                if (serv.ServiceType.ToUpper() != "TV" && serv.ServiceType.ToUpper() != "RADIO")
-                {
-                    edited.Service.Add(serv);
-                }
-            }
-
-            int j = 1;
-            foreach (object obj in FinallyListTV.Items)
-            {
-                string ident = (string)obj;
-                Service serv = GetChannelByIdent(ident, "TV");
-
-                if (serv != null)
-                {
-                    serv.ChannelNo = j;
-                    edited.Service.Add(serv);
-                    j++;
-                }
-            }
-
-            int k = 1;
-            foreach (object obj in FinallyListRadio.Items)
-            {
-                string ident = (string)obj;
-                Service serv = GetChannelByIdent(ident, "RADIO");
-
-                if (serv != null)
-                {
-                    serv.ChannelNo = k;
-                    edited.Service.Add(serv);
-                    k++;
-                }
-            }
-
-            return edited;
+            Application.Exit();
         }
 
-        private void AddAllUnsortedTV(object sender, EventArgs e)
+        private void OpenTVChannels(object sender, EventArgs e)
         {
-            string[] strings = new string[TVChannels.Count];
-            int index = 0;
-            foreach (object itm in PendingListTV.Items)
-            {
-                string ident = (string)itm;
-                strings[index] = ident;
-                index++;
-            }
-
-            foreach (string ident in strings)
-            {
-                AddTVChannel(ident);
-            }
-
-            SearchTVChannel(sender, e);
+            SortTVChannels.BringToFront();
         }
 
-        private void AddAllRadioUnsorted(object sender, EventArgs e)
+        private void OpenRadioChannels(object sender, EventArgs e)
         {
-            string[] strings = new string[RadioChannels.Count];
-            int index = 0;
-            foreach (object itm in PendingListRadio.Items)
-            {
-                string ident = (string)itm;
-                strings[index] = ident;
-                index++;
-            }
-
-            foreach (string ident in strings)
-            {
-                AddRadioChannel(ident);
-            }
-
-            SearchRadioChannel(sender, e);
+            SortRadioChannels.BringToFront();
         }
 
-        private void InsertTV(object sender, EventArgs e)
+        private void OpenDataChannels(object sender, EventArgs e)
         {
-            string cbtext = Clipboard.GetText();
-            string[] idents = cbtext.Split(';');
-
-            foreach (string ident in idents)
-            {
-                if (string.IsNullOrEmpty(ident))
-                {
-                    continue;
-                }
-
-                _ = FinallyListTV.Items.Add(ident);
-                SortedTVChannels.Add(ident);
-            }
+            SortDataChannels.BringToFront();
         }
 
-        private void InsertRadio(object sender, EventArgs e)
+        private void OpenTransponders(object sender, EventArgs e)
         {
-            string cbtext = Clipboard.GetText();
-            string[] idents = cbtext.Split(';');
-
-            foreach (string ident in idents)
-            {
-                if(string.IsNullOrEmpty(ident))
-                { 
-                    continue; 
-                }
-
-                _ = FinallyListRadio.Items.Add(ident);
-                SortedRadioChannels.Add(ident);
-            }
+            //throw new NotImplementedException();
         }
 
-        private void CopyCBTV(object sender, EventArgs e)
+        private void OpenSatellites(object sender, EventArgs e)
         {
-            string cbtext = "";
-            foreach(object obj in FinallyListTV.Items)
-            {
-                string ident = (string)obj;
-                cbtext += ident + ";";
-            }
-
-            Clipboard.SetText(cbtext);
+            EditSatellites.BringToFront();
         }
 
-        private void CopyCBRadio(object sender, EventArgs e)
+        private void OpenRecBrowser(object sender, EventArgs e)
         {
-            string cbtext = "";
-            foreach (object obj in FinallyListRadio.Items)
-            {
-                string ident = (string)obj;
-                cbtext += ident + ";";
-            }
-
-            Clipboard.SetText(cbtext);
+            KathreinRecBrowser.BringToFront();
         }
     }
 }
