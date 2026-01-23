@@ -12,28 +12,33 @@ using System.Windows.Forms;
 
 namespace Kathrein_ChanEdit
 {
-    public partial class EditSatellites : Form
+    public partial class EditTransponders : Form
     {
-        public EditSatellites()
+        public EditTransponders()
         {
             InitializeComponent();
         }
 
-        public void LoadSatellites(object sender, EventArgs e)
+        public void LoadTransponders(object sender, EventArgs e)
         {
-            SatGrid.Rows.Clear();
+            TPGrid.Rows.Clear();
 
-            foreach(Satellite sat in Form1.CurrentConfig.Satellites)
+            foreach(Transponder tp in Form1.CurrentConfig.Transponders)
             {
-                _ = SatGrid.Rows.Add(sat.SatID, sat.SatName, sat.LO1Frequency, sat.LO2Frequency, sat.BandSwitchFreq, sat.Longitude, sat.SkewOffset);
+                _ = TPGrid.Rows.Add($"{tp.SatID} [ {Form1.GetSatelliteBySatId(tp.SatID).SatName} ]", 
+                    tp.Frequency, tp.SymbolRate, tp.Tsid, tp.Oid, tp.Polarisation, tp.DvbType, tp.Modulation);
             }
         }
 
-        private void SaveSatellites(object sender, EventArgs e)
+        private bool IsTransponder((int, int) a, (int, int) b)
         {
-            DialogResult dr = MessageBox.Show("If you deleted any sattelite, \r\n" +
-                "all channels and transponders that depend on that one will also be deleted!\r\n" +
-                "Changes on the Transponders Tab will be dismissed!\r\n" +
+            return a.Item1 == b.Item1 && a.Item2 == b.Item2;
+        }
+
+        private void SaveTransponders(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("If you deleted any transponder, \r\n" +
+                "all channels that depend on that one will also be deleted!\r\n" +
                 "This action cannot be reversed! and could make your entire Channel Config unusable!\r\n" +
                 "\r\n" +
                 "Do you still want to continue to save?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -43,79 +48,76 @@ namespace Kathrein_ChanEdit
                 return;
             }
 
-            List<Satellite> NSat = new List<Satellite>();
-            List<int> RemovedSatIds = new List<int>();
+            List<Transponder> NTP = new List<Transponder>();
+            List<(int, int)> RemovedTransponders = new List<(int, int)>();
 
-            for (int i = 0; i < SatGrid.Rows.Count - 1; i++)
+            for (int i = 0; i < TPGrid.Rows.Count - 1; i++)
             {
-                Satellite sat = new Satellite();
-                sat.SatID           = (int)SatGrid.Rows[i].Cells[0].Value;
-                sat.SatName         = (string)SatGrid.Rows[i].Cells[1].Value;
-                sat.LO1Frequency    = (int)SatGrid.Rows[i].Cells[2].Value;
-                sat.LO2Frequency    = (int)SatGrid.Rows[i].Cells[3].Value;
-                sat.BandSwitchFreq  = (int)SatGrid.Rows[i].Cells[4].Value;
-                sat.Longitude       = (int)SatGrid.Rows[i].Cells[5].Value;
-                sat.SkewOffset      = (int)SatGrid.Rows[i].Cells[6].Value;
-                NSat.Add(sat);
+                Transponder TP = new Transponder();
+
+                TP.SatID = Convert.ToInt32(((string)TPGrid.Rows[i].Cells[0].Value).Split(' ')[0]);
+                TP.Frequency = (int)TPGrid.Rows[i].Cells[1].Value;
+                TP.SymbolRate = (int)TPGrid.Rows[i].Cells[2].Value;
+                TP.Tsid = (int)TPGrid.Rows[i].Cells[3].Value;
+                TP.Oid = (int)TPGrid.Rows[i].Cells[4].Value;
+                TP.Polarisation = (string)TPGrid.Rows[i].Cells[5].Value;
+                TP.DvbType = (string)TPGrid.Rows[i].Cells[6].Value;
+                TP.Modulation = (string)TPGrid.Rows[i].Cells[7].Value;
+
+                NTP.Add(TP);
             }
 
             for (int i = Form1.CurrentConfig.Satellites.Count - 1; i >= 0; i--)
             {
-                Satellite oldSat = Form1.CurrentConfig.Satellites[i];
+                Transponder OTP = Form1.CurrentConfig.Transponders[i];
 
-                bool stillExists = NSat.Any(s =>
+                bool stillExists = NTP.Any(s =>
                 {
-                    return s.SatID == oldSat.SatID;
+                    return s.SatID == OTP.SatID && s.Frequency == OTP.Frequency;
                 });
+
                 if (!stillExists)
                 {
-                    RemovedSatIds.Add(oldSat.SatID);
+                    RemovedTransponders.Add((OTP.SatID, OTP.Frequency));
                     Form1.CurrentConfig.Satellites.RemoveAt(i);
                 }
             }
 
-            foreach (Satellite nsat in NSat)
+            foreach (Transponder TP in NTP)
             {
-                Satellite osat = Form1.CurrentConfig.Satellites
+                Transponder OTP = Form1.CurrentConfig.Transponders
                     .FirstOrDefault(s =>
                     {
-                        return s.SatID == nsat.SatID;
+                        return s.SatID == TP.SatID && s.Frequency == TP.Frequency;
                     });
 
-                if (osat != null)
+                if (OTP != null)
                 {
-                    osat.SatName = nsat.SatName;
-                    osat.LO1Frequency = nsat.LO1Frequency;
-                    osat.LO2Frequency = nsat.LO2Frequency;
-                    osat.BandSwitchFreq = nsat.BandSwitchFreq;
-                    osat.Longitude = nsat.Longitude;
-                    osat.SkewOffset = nsat.SkewOffset;
+                    OTP.SatID = TP.SatID;
+                    OTP.Frequency = TP.Frequency;
+                    OTP.SymbolRate = TP.SymbolRate;
+                    OTP.Tsid = TP.Tsid;
+                    OTP.Oid = TP.Oid;
+                    OTP.Polarisation = TP.Polarisation;
+                    OTP.DvbType = TP.DvbType;
+                    OTP.Modulation = TP.Modulation;
                 }
                 else
                 {
-                    Form1.CurrentConfig.Satellites.Add(nsat);
+                    Form1.CurrentConfig.Transponders.Add(TP);
                 }
             }
-
-            for (int j = Form1.CurrentConfig.Transponders.Count - 1; j >= 0; j--)
-            {
-                Transponder tp = Form1.CurrentConfig.Transponders[j];
-
-                if(RemovedSatIds.Contains(tp.SatID))
-                {
-                    Form1.CurrentConfig.Transponders.RemoveAt(j);
-                }
-            }
-
-            Form1.EditTransponders.LoadTransponders(sender, e);
 
             for(int k = Form1.CurrentConfig.Service.Count - 1; k >= 0; k--)
             {
                 Service serv = Form1.CurrentConfig.Service[k];
 
-                if(RemovedSatIds.Contains(serv.SatId))
+                foreach((int, int) Removed in RemovedTransponders)
                 {
-                    Form1.CurrentConfig.Service.RemoveAt(k);
+                    if(IsTransponder(Removed, (serv.SatId, serv.Frequency)))
+                    {
+                        Form1.CurrentConfig.Service.RemoveAt(k);
+                    }
                 }
             }
 

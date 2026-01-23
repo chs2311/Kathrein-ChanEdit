@@ -30,6 +30,7 @@ namespace Kathrein_ChanEdit
         public static SortRadioChannels SortRadioChannels = new SortRadioChannels();
         public static SortDataChannels SortDataChannels = new SortDataChannels();
         public static EditSatellites EditSatellites = new EditSatellites();
+        public static EditTransponders EditTransponders = new EditTransponders();
         public static Kathrein_RecBrowser.Form1 KathreinRecBrowser = new Kathrein_RecBrowser.Form1();
 
         public Form1()
@@ -46,24 +47,28 @@ namespace Kathrein_ChanEdit
             SortTVChannels.Dock = DockStyle.Fill;
             SortRadioChannels.Dock = DockStyle.Fill;
             SortDataChannels.Dock = DockStyle.Fill;
+            EditTransponders.Dock = DockStyle.Fill;
             EditSatellites.Dock = DockStyle.Fill;
             KathreinRecBrowser.Dock = DockStyle.Fill;
 
             SortTVChannels.TopLevel = false;
             SortRadioChannels.TopLevel = false;
             SortDataChannels.TopLevel = false;
+            EditTransponders.TopLevel = false;
             EditSatellites.TopLevel = false;
             KathreinRecBrowser.TopLevel = false;
 
             WindowsPanel.Controls.Add(SortTVChannels);
             WindowsPanel.Controls.Add(SortRadioChannels);
             WindowsPanel.Controls.Add(SortDataChannels);
+            WindowsPanel.Controls.Add(EditTransponders);
             WindowsPanel.Controls.Add(EditSatellites);
             WindowsPanel.Controls.Add(KathreinRecBrowser);
 
             SortTVChannels.Show();
             SortRadioChannels.Show();
             SortDataChannels.Show();
+            EditTransponders.Show();
             EditSatellites.Show();
             KathreinRecBrowser.Show();
 
@@ -78,6 +83,8 @@ namespace Kathrein_ChanEdit
             if(ofd.ShowDialog() == DialogResult.OK)
             {
                 CurrentConfig = ServiceList.Load(ofd.FileName);
+
+                EditTransponders.LoadTransponders(sender, e);
                 EditSatellites.LoadSatellites(sender, e);
 
                 AllChannelsPending();
@@ -246,7 +253,7 @@ namespace Kathrein_ChanEdit
 
         private void OpenTransponders(object sender, EventArgs e)
         {
-            //throw new NotImplementedException();
+            EditTransponders.BringToFront();
         }
 
         private void OpenSatellites(object sender, EventArgs e)

@@ -16,6 +16,9 @@ namespace Kathrein_RecBrowser
     {
         List<RecordingInfo> RecIdents = new List<RecordingInfo>();
 
+        string SelectedDrive = "D:";
+        string LocalDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
         public Form1()
         {
             InitializeComponent();
@@ -37,13 +40,9 @@ namespace Kathrein_RecBrowser
             return Process.Start(ffmpeg);
         }
 
-        public void LoadFromDisk()
+        public void LoadFromDisk(string drive)
         {
-            panel1.Controls.Clear();
-            RecIdents.Clear();
-            string drive = (string)DiskDriveSelector.SelectedItem;
-
-            string[] dirs = Directory.GetDirectories($"{drive}kathrein\\video");
+            string[] dirs = Directory.GetDirectories($"{drive}\\kathrein\\video");
 
             List<Process> processes = new List<Process>();
             foreach (string dir in dirs)
@@ -90,7 +89,13 @@ namespace Kathrein_RecBrowser
             try
             {
                 DriveValidLabel.Text = "Drive valid";
-                LoadFromDisk();
+                panel1.Controls.Clear();
+                RecIdents.Clear();
+
+                string drive = (string)DiskDriveSelector.SelectedItem;
+                LoadFromDisk(drive);
+
+                SelectedDrive = drive;
             }
             catch
             {
@@ -113,6 +118,31 @@ namespace Kathrein_RecBrowser
                 Recording rec = c as Recording;
                 string filename = Path.GetFileName(rec.Directory) + ".mp4";
                 rec.MPEGConvert(Path.Combine(dir, filename));
+            }
+        }
+
+        private void SelectCustomDir(object sender, EventArgs e)
+        {
+            try
+            {
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+                if(fbd.ShowDialog() != DialogResult.OK)
+                {
+                    DriveValidLabel.Text = "Canceled";
+                }
+
+                DriveValidLabel.Text = "Drive valid";
+                panel1.Controls.Clear();
+                RecIdents.Clear();
+
+                string drive = fbd.SelectedPath;
+                LoadFromDisk(drive);
+
+                LocalDir = drive;
+            }
+            catch
+            {
+                DriveValidLabel.Text = "Drive invalid";
             }
         }
     }

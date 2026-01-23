@@ -12,4 +12,3 @@ D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\bin\Debug\Kathrein-RecBrowser.exe.con
 D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\bin\Debug\Kathrein-RecBrowser.exe
 D:\Dev\Kathrein-ChanEdit\Kathrein-ChanEdit\bin\Debug\Kathrein-RecBrowser.pdb
 D:\Dev\Kathrein-ChanEdit\Kathrein-RecBrowser\obj\Debug\Kathrein_RecBrowser.Recording.resources
-D:\Dev\Kathrein-ChanEdit\Kathrein-RecBrowser\obj\Debug\Kathrein-RecBrowser.exe.config

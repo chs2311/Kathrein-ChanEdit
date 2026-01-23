@@ -35,6 +35,7 @@
             this.AvRecordsInfoLabel = new System.Windows.Forms.Label();
             this.DriveValidLabel = new System.Windows.Forms.Label();
             this.ConvAllButton = new System.Windows.Forms.Button();
+            this.CustomDirButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // TitleLabel
@@ -127,18 +128,18 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DriveValidLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.DriveValidLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DriveValidLabel.Location = new System.Drawing.Point(12, 408);
+            this.DriveValidLabel.Location = new System.Drawing.Point(306, 407);
             this.DriveValidLabel.Name = "DriveValidLabel";
-            this.DriveValidLabel.Size = new System.Drawing.Size(611, 29);
+            this.DriveValidLabel.Size = new System.Drawing.Size(482, 29);
             this.DriveValidLabel.TabIndex = 5;
             this.DriveValidLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ConvAllButton
             // 
-            this.ConvAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ConvAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ConvAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ConvAllButton.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ConvAllButton.Location = new System.Drawing.Point(629, 408);
+            this.ConvAllButton.Location = new System.Drawing.Point(141, 407);
             this.ConvAllButton.Name = "ConvAllButton";
             this.ConvAllButton.Size = new System.Drawing.Size(159, 30);
             this.ConvAllButton.TabIndex = 6;
@@ -146,13 +147,27 @@
             this.ConvAllButton.UseVisualStyleBackColor = true;
             this.ConvAllButton.Click += new System.EventHandler(this.ConvertAll);
             // 
+            // CustomDirButton
+            // 
+            this.CustomDirButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CustomDirButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CustomDirButton.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustomDirButton.Location = new System.Drawing.Point(15, 407);
+            this.CustomDirButton.Name = "CustomDirButton";
+            this.CustomDirButton.Size = new System.Drawing.Size(120, 30);
+            this.CustomDirButton.TabIndex = 7;
+            this.CustomDirButton.Text = "Directory . . . ";
+            this.CustomDirButton.UseVisualStyleBackColor = true;
+            this.CustomDirButton.Click += new System.EventHandler(this.SelectCustomDir);
+            // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.ConvAllButton);
             this.Controls.Add(this.DriveValidLabel);
+            this.Controls.Add(this.CustomDirButton);
+            this.Controls.Add(this.ConvAllButton);
             this.Controls.Add(this.AvRecordsInfoLabel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.SelectInfoLabel);
@@ -174,6 +189,7 @@
         private System.Windows.Forms.Label AvRecordsInfoLabel;
         private System.Windows.Forms.Label DriveValidLabel;
         private System.Windows.Forms.Button ConvAllButton;
+        private System.Windows.Forms.Button CustomDirButton;
     }
 }
 
